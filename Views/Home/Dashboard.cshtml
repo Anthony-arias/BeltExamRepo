@@ -1,0 +1,55 @@
+﻿@model List<DojoActivity>
+
+@{
+    ViewData["Title"] = (string)ViewBag.UserName;
+}
+
+
+
+<div >
+    <partial name="NavBar" view-data="ViewData" />
+    <table style="width: 900px; border: solid; margin: 0 auto;">
+        <tr>
+            <th>Activity</th>
+            <th>Date and Time</th>
+            <th>Duration</th>
+            <th>Even Coordinator</th>
+            <th>No. of Participants</th>
+            <th>actions</th>
+        </tr>
+        @foreach (var DojoActivity in Model)
+        {
+            if (DojoActivity.Date < DateTime.Now.Date) { continue; }
+            else if (DojoActivity.Date == DateTime.Now.Date && DojoActivity.Time < DateTime.Now) { continue;}
+            <tr>
+                <td><a href="activity/@DojoActivity.DojoActivityId">@DojoActivity.Name</a></td>
+                <td>@DojoActivity.Date.ToString("MM/dd") at @DojoActivity.Time.ToString("h:mm tt")</td>
+                <td>@DojoActivity.Duration @DojoActivity.DurationFormat</td>
+                <td>@DojoActivity.Creator.FirstName </td>
+                <td>@DojoActivity.Attendees.Count</td>
+                <td>
+                    @{
+                        if (DojoActivity.UserId == (int)TempData["LogedUser"])
+                        {
+                            <a asp-action="RemoveDojoActivity" asp-controller="DojoActivities"
+                               asp-route-DojoActivityId="@DojoActivity.DojoActivityId">Delete</a>
+                        }
+                        else if (DojoActivity.Attendees.Any(wed => wed.UserId == (int)TempData["LogedUser"]))
+                        {
+                            <a asp-action="RemoveAttendeeFromDojoActivity" asp-controller="DojoActivities"
+                               asp-route-DojoActivityId="@DojoActivity.DojoActivityId" asp-route-UserId="@TempData["LogedUser"]">Leave</a>
+                        }
+                        else
+                        {
+
+                            <a asp-action="AddAttendeeToDojoActivity" asp-controller="DojoActivities"
+                               asp-route-DojoActivityId="@DojoActivity.DojoActivityId" asp-route-UserId="@TempData["LogedUser"]">Join</a>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+    <a href="/new">Add New Activity</a>
+</div>
+

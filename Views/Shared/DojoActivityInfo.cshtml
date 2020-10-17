@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewData["Title"] = "Link";
+}
+
+@model DojoActivity
+<div>
+    <partial name="NavBar" view-data="ViewData" />
+    <h1>@Model.Name</h1>
+    @{
+
+        if (Model.Creator.UserId == (int)TempData["LogedUser"])
+        {
+            <a style="float:right" asp-action="RemoveDojoActivity" asp-controller="DojoActivities"
+               asp-route-DojoActivityId="@Model.DojoActivityId">Delete</a>
+        }
+        else if (Model.Attendees.Any(wed => wed.UserId == (int)TempData["LogedUser"]))
+        {
+            <a style="float:right" asp-action="RemoveAttendeeFromDojoActivity" asp-controller="DojoActivities"
+               asp-route-DojoActivityId="@Model.DojoActivityId" asp-route-UserId="@TempData["LogedUser"]">Leave</a>
+        }
+        else
+        {
+
+            <a style="float:right" asp-action="AddAttendeeToDojoActivity" asp-controller="DojoActivities"
+               asp-route-DojoActivityId="@Model.DojoActivityId" asp-route-UserId="@TempData["LogedUser"]">Join</a>
+        }
+    }
+    <p style="font-weight:bold">Event Coordinator:</p>
+    <p>@Model.Creator.FirstName</p>
+
+    <p style="font-weight:bold">Description:</p>
+    <p>@Model.Description</p>
+
+    <p style="font-weight:bold">Participants:</p> 
+    @foreach (var sub in Model.Attendees)
+    {
+        <p>@sub.User.FirstName</p>
+    }
+</div>

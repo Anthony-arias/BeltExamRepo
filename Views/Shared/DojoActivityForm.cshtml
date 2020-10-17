@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewData["Title"] = "Link";
+}
+
+@model DojoActivity
+<div >
+    <partial name="NavBar" view-data="ViewData" />
+    <form asp-action="CreateDojoActivity" asp-controller="DojoActivities" method="post">
+        <input asp-for="UserId" value=@TempData["LogedUser"] hidden />
+        <div style="display: flex; justify-content:space-evenly">
+            <div>
+                <span asp-validation-for="Name"></span>
+                <label asp-for="Name">Title:</label>
+                <input asp-for="Name" /> <br />
+                <span asp-validation-for="Date"></span>
+                <label asp-for="Date">Date</label>
+                <input asp-for="Date" /> <br />
+            </div>
+            <div>
+                <span asp-validation-for="Time"></span>
+                <label asp-for="Time">Time</label>
+                <input asp-for="Time" /> <br />
+                <span asp-validation-for="Duration"></span>
+                <label asp-for="Duration">Duration</label>
+                <input asp-for="Duration" />
+                <span asp-validation-for="DurationFormat"></span>
+                <select asp-for="DurationFormat">
+                    <option value="Hours">Hours</option>
+                    <option value="Minutes">Minutes</option>
+                    <option value="Days">Days</option>
+                </select>
+            </div>
+        </div>
+        <span asp-validation-for="Description"></span>
+        <label asp-for="Description">Description:</label>
+        <textarea style="width: 800px; height: 300px" asp-for="Description" ></textarea> <br />
+        <input type="submit" value="Create Activity" />
+    </form>
+
+</div>

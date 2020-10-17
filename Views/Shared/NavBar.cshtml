@@ -1,0 +1,24 @@
+﻿
+
+<div style="display: flex; justify-content: space-between">
+    <h1>Dojo Activity Center</h1>
+    @*<h2>@ViewData["Title"]</h2>*@
+
+    @{
+        if ((string)ViewData["Title"] == "Link")
+        {
+            <p>
+                <a href="/home">home</a>
+                <a href="/logout">Log Out</a>
+            </p>
+        }
+        else
+        {
+            <p>
+                <p>@ViewData["Title"]</p>
+                <a href="/logout">Log Out</a>
+            </p>
+        }
+    }
+
+</div>
